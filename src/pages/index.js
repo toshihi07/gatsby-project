@@ -11,16 +11,18 @@ const IndexPage = () => {
     allMarkdownRemark{
       edges{
         node{
+          fields {
+            slug
+          }
           frontmatter{
-            title,
-            date,
+            date
+            title
           }
         }
       }
     }
   }
   `)
-  console.log('data:',data);
   return (
     <Layout>
     <Kv />
@@ -29,10 +31,11 @@ const IndexPage = () => {
         {
           data.allMarkdownRemark.edges.map((edge,index) => {
             return (
-              <Col sm={4} ley={index}>
+              <Col sm={4} key={index}>
               <BlogItem 
                 title = {edge.node.frontmatter.title}
                 date = {edge.node.frontmatter.date}
+                link = {`/blog/${edge.node.fields.slug}`}
               />
             </Col>
             )
