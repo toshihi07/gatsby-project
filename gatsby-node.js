@@ -1,22 +1,23 @@
 const path = require('path');
 
-module.exports.onCreateNode = ({ node, actions }) => {
- // actionsからcreateNodeFieldを取り出す。
-  const { createNodeField } = actions
-  if (node.internal.type === "MarkdownRemark") {    
-    //slugの作成にはnodeのbuildingモジュールであるpathモジュールのbaseneme関数を使用する。
-    const slug = path.basename(node.fileAbsolutePath,'.md');
-    // /別のノードを拡張します
-    createNodeField({
-      node,
-      name: `slug`,
-      value: slug
-    })
-  }
-}
+//slugを作る処理
+// module.exports.onCreateNode = ({ node, actions }) => {
+//  // actionsからcreateNodeFieldを取り出す。
+//   const { createNodeField } = actions
+//   if (node.internal.type === "MarkdownRemark") {    
+//     //slugの作成にはnodeのbuildingモジュールであるpathモジュールのbaseneme関数を使用する。
+//     const slug = path.basename(node.fileAbsolutePath,'.md');
+//     // /別のノードを拡張します
+//     createNodeField({
+//       node,
+//       name: `slug`,
+//       value: slug
+//     })
+//   }
+// }
 
 
-
+//slugから詳細ページを作成する処理
 module.exports.createPages = async ({ graphql, actions }) => {
  // actionsからcreatePageを取り出す。
   const { createPage } = actions
@@ -24,26 +25,24 @@ module.exports.createPages = async ({ graphql, actions }) => {
   //非同期処理を簡潔に実行する
   const res = await graphql(`
   query {
-    allMarkdownRemark{
-      edges{
-        node{
-          fields {
-            slug
-          }
+    allContentfulBlogPost{
+      edges {
+        node {
+          slug
         }
       }
     }
   }
   `)
-  console.log("res:", res);
-  res.data.allMarkdownRemark.edges.forEach(edge => {
+
+  res.data.allContentfulBlogPost.edges.forEach(edge => {
     //createPage({})
     createPage({
       component: blogTemplate,
       //バッククォート
-      path: `/blog/${edge.node.fields.slug}`,
+      path: `/blog/${edge.node.slug}`,
       context: {
-        slug: edge.node.fields.slug
+        slug: edge.node.slug
       }
     })
   })

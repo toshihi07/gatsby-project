@@ -58,6 +58,15 @@ module.exports = {
       ],
     },
   },
+  //contentful query.allcontentfulBlogPostで取得
+  {
+    resolve: `gatsby-source-contentful`,
+    options: {
+      spaceId: `xahmeqhuflnp`,
+      //Content Delivery API - access token
+      accessToken: 'mapIChDAq7fOP0oAvKxkSBFcplpz1AAYKsDx6EhQ9Nk',
+    },
+  },
   `gatsby-plugin-sharp`,
   {
     resolve: `gatsby-transformer-remark`,

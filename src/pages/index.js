@@ -8,15 +8,19 @@ import BlogItem from '../components/blogItem'
 const IndexPage = () => {
   const data = useStaticQuery(graphql`
   query{
-    allMarkdownRemark{
-      edges{
-        node{
-          fields {
-            slug
-          }
-          frontmatter{
-            date
-            title
+    allContentfulBlogPost(sort :{
+      fields: createdDate,
+      order: ASC
+    }) {
+      edges {
+        node {
+          title
+          slug
+          createdDate(formatString: "YYYY/MM/DD")
+          thumnail {
+            fluid{
+              src
+            }
           }
         }
       }
@@ -29,13 +33,14 @@ const IndexPage = () => {
     <Container>
       <Row>
         {
-          data.allMarkdownRemark.edges.map((edge,index) => {
+          data.allContentfulBlogPost.edges.map((edge,index) => {
             return (
               <Col sm={4} key={index}>
               <BlogItem 
-                title = {edge.node.frontmatter.title}
-                date = {edge.node.frontmatter.date}
-                link = {`/blog/${edge.node.fields.slug}`}
+                title = {edge.node.title}
+                date = {edge.node.createdDate}
+                src={edge.node.thumnail.fluid.src}
+                link = {`/blog/${edge.node.slug}`}
               />
             </Col>
             )

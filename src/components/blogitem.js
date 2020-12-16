@@ -1,12 +1,11 @@
 import React from "react"
 import { Card } from "react-bootstrap"
-import SampleImage from "../images/image_002.jpg"
 import { Link } from "gatsby"
 
-function BlogItem({title, date,link}) {
+function BlogItem({title, date,link, src}) {
   return (
     <Card>
-      <Card.Img variant="top" src={SampleImage} />
+      <Card.Img variant="top" src={src} />
       <Card.Title>{title}</Card.Title>
       <Card.Text>{date}</Card.Text>
       <Link to={link}>see more</Link>
